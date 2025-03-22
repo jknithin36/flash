@@ -1,32 +1,36 @@
 import QuestionCard from "@/components/cards/QuestionCard";
 import DataRenderer from "@/components/DataRenderer";
 import CommonFilter from "@/components/filters/CommonFilter";
-import HomeFilter from "@/components/filters/HomeFilter";
-import Pagination from "@/components/Pagination";
 import LocalSearch from "@/components/search/LocalSearch";
-import {
-  HomePageFilters,
-  TagFilters,
-  TagPageFilters,
-} from "@/constants/filter";
+import Pagination from "@/components/Pagination";
+
+import { TagPageFilters } from "@/constants/filter";
 import ROUTES from "@/constants/routes";
 import { EMPTY_QUESTION } from "@/constants/states";
 import { getTagQuestions } from "@/lib/actions/tag.actions";
-import { Button } from "@mdxeditor/editor";
-import { Link } from "lucide-react";
+
 import React from "react";
 
+interface RouteParams {
+  params: { id: string };
+  searchParams: {
+    page?: string;
+    pageSize?: string;
+    query?: string;
+    filter?: string;
+  };
+}
+
 const Page = async ({ params, searchParams }: RouteParams) => {
-  const { id } = await params;
-  // const { page, pageSize, query } = await searchParams;
-  const { page, pageSize, query, filter } = await searchParams;
+  const { id } = params;
+  const { page, pageSize, query, filter } = searchParams;
 
   const { success, data, error } = await getTagQuestions({
     tagId: id,
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
-    query,
-    filter,
+    q: query ?? "",
+    filter: filter ?? "Newest",
   });
 
   const { tag, questions, isNext } = data || {};
