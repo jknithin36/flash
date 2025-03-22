@@ -11,7 +11,7 @@ const compat = new FlatCompat({
 });
 
 export default [
-  js.configs.recommended, // base JS rules
+  js.configs.recommended,
   ...compat.extends([
     "next",
     "next/core-web-vitals",
